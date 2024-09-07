@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第一ミッション</title>
+  <link rel="stylesheet" href="css/style.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Reggae+One&display=swap" rel="stylesheet">
+
+  <link href="https://use.fontawesome.com/releases/v6.5.2/css/all.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome-animation/0.0.10/font-awesome-animation.css" type="text/css" media="all" />
+</head>
+<body>
+<h1>買い物狂いのトメイトウ（トマト）<div class = "star-level"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div></h1>
+<img src = "img/賞味期限切れ.png" class="keyframe animation" alt = "poteto">
+<p class="explanation">買い物狂いで食品を無駄にする買い物狂いのトメイトゥを発見！<br>食べきれるわけないのに、買いまくっている！これは食い止めなければ、<br>この貯蔵のトメイトゥを倒すためには、秘伝のアイテムを集めて、”フレイムムソードエッグ（オムライス） ”を作らねばならない！<br>フレイムソードエッグを作り上げ、買い物狂いを食いトメイトゥ！</p>
+<div id="checklist">
+  <h2>フレームソードエッグ（オムライス）</h2>
+  <div class = "checklist-content">
+  <div class = "item1">
+  <label><input type="checkbox" class="check-item" data-name="卵" data-quantity="2"> 卵 - 2個</label><br>
+  <label><input type="checkbox" class="check-item" data-name="玉ねぎ" data-quantity="0.5"> 玉ねぎ - 0.5個</label><br>
+  </div>
+  <div class = "item2">
+  <label><input type="checkbox" class="check-item" data-name="ごはん" data-quantity="1"> ごはん - 1合</label><br>
+  <label><input type="checkbox" class="check-item" data-name="ピーマン" data-quantity="1"> ピーマン - 1個</label><br>
+  </div>
+  <div class = "item3">
+    <label><input type="checkbox" class="check-item" data-name="鶏もも" data-quantity="100"> 鶏もも - 100g</label><br>
+    </div>
+</div>
+<details class="accordion-003">
+  <summary><div><i class="fa-solid fa-key"></i>キーアイテム</div></summary>
+  <p>水…1.5カップ<br>麺つゆ（2倍濃縮）…大さじ2<br>塩…少々br>サラダ油…小さじ1</p>
+</details>
+<!-- <details class="accordion-003">
+  <summary>アコーディオンのデザイン</summary>
+  <p>下線だけのシンプルなアコーディオンメニュー。クセがなくどんなサイトでも使いやすいのが特徴です。</p>
+</details> -->
+</div>
+
+<div class="container">
+  <h3>秘伝のアイテムボックス</h3>
+  <form id="ingredient-form">
+    <label for="name">食材の名前:</label>
+    <select id="name" name="name" required>
+      <option value="" disabled selected>選択してください</option>
+      
+      <option value="ごはん">ごはん</option>
+      <option value="うどん">うどん</option>
+      <option value="パスタ">パスタ</option>
+      <option value="鶏もも">鶏もも</option>
+      <option value="牛肉">牛肉</option>
+      <option value="ベーコン">ベーコン</option>
+      <option value="卵">卵</option>
+      <option value="長ネギ">長ネギ</option>
+      <option value="なす">なす</option>
+      <option value="トマト">トマト</option>
+      <option value="玉ねぎ">玉ねぎ</option>
+      <option value="じゃがいも">じゃがいも</option>
+      <option value="にんじん">にんじん</option>
+      <option value="きゃべつ">きゃべつ</option>
+      <option value="アスパラ">アスパラ</option>
+      <option value="ごぼう">ごぼう</option>
+      <option value="紅ショウガ">紅ショウガ</option>
+      <option value="パプリカ">パプリカ</option>
+      <option value="ピーマン">ピーマン</option>
+      <option value="もやし">もやし</option>
+      <option value="にんにく">にんにく</option>
+      <option value="里芋">里芋</option>
+      <option value="しめじ">しめじ</option>
+      <option value="椎茸">椎茸</option>
+      <option value="こんにゃく">こんにゃく</option>
+      <option value="バター">バター</option>
+      <option value="チーズ">チーズ</option>
+      
+      
+      
+    </select>
+
+    <label for="quantity">個数（個数/グラム/合/本）:</label>
+    <input type="number" id="quantity" name="quantity" step = "0.5" required>
+
+    <label for="photo">写真:</label>
+    <input type="file" id="photo" name="photo" accept="image/*" required>
+
+    <button type="submit">登録</button>
+  </form>
+  <div id="output"></div>
+
+  <button id="mission-button" style="display:none;" onclick="goToSecondMission()">次へ進む</button>
+</div>
+<script>
+  // JavaScriptコードをここに追加します
+  const unitMap = {
+    'ごはん': '合',
+    'うどん': '玉',
+    'パスタ': '束',
+    '鶏もも': 'g',
+    '牛肉': 'g',
+    'ベーコン': '枚',
+    '卵': '個',
+    '長ネギ': '本',
+    'なす': '本',
+    'トマト': '個',
+    '玉ねぎ': '個',
+    'じゃがいも': '個',
+    'にんじん': '本',
+    'きゃべつ': '個',
+    'アスパラ': '本',
+    'ごぼう': '本',
+    '紅ショウガ': 'グラム',
+    'パプリカ': '個',
+    'ピーマン': '個',
+    'もやし': 'g',
+    'にんにく': '片',
+    '里芋': '個',
+    'しめじ': '個',
+    '椎茸': '個',
+    'こんにゃく': '個',
+    'バター': 'g',
+    'チーズ': '個',
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    updateUsedIngredients();
+    displayStoredIngredients();
+    loadChecklistState();
+    autoCheckIngredients();
+    checkMissionButton();
+  });
+
+  document.getElementById('ingredient-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const nameSelect = document.getElementById('name');
+    const name = nameSelect.options[nameSelect.selectedIndex].value;
+    const quantity = parseFloat(document.getElementById('quantity').value).toFixed(1);
+    const photo = document.getElementById('photo').files[0];
+    const unit = unitMap[name] || '';
+    const now = new Date();
+    const formattedDate = now.toLocaleString();
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const ingredient = {
+        name: name,
+        quantity: parseFloat(quantity),
+        unit: unit,
+        date: formattedDate,
+        photo: e.target.result
+      };
+
+      saveIngredient(ingredient);
+      document.getElementById('ingredient-form').reset();
+      checkMissionButton();
+    };
+
+    reader.readAsDataURL(photo);
+  });
+
+  function saveIngredient(ingredient) {
+    let ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+    const existingIngredient = ingredients.find(ing => ing.name === ingredient.name);
+
+    if (existingIngredient) {
+      existingIngredient.quantity = parseFloat((existingIngredient.quantity + ingredient.quantity).toFixed(1));
+      existingIngredient.date = ingredient.date;
+      existingIngredient.photo = ingredient.photo;
+      existingIngredient.unit = ingredient.unit;
+    } else {
+      ingredient.quantity = parseFloat(ingredient.quantity.toFixed(1));
+      ingredients.push(ingredient);
+    }
+
+    localStorage.setItem('ingredients', JSON.stringify(ingredients));
+    document.getElementById('output').innerHTML = '';
+    displayStoredIngredients();
+    updateChecklist(ingredient.name);
+  }
+
+  function displayStoredIngredients() {
+    const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+    ingredients.forEach(ingredient => {
+      addIngredientToOutput(ingredient);
+    });
+  }
+
+  function addIngredientToOutput(ingredient) {
+    const outputItem = document.createElement('div');
+    outputItem.classList.add('output-item');
+
+    outputItem.innerHTML =
+      `<strong>食材の名前:</strong> ${ingredient.name}<br>
+       <strong>個数:</strong> ${ingredient.quantity.toFixed(1)} ${ingredient.unit}<br>
+       <strong>登録した日時:</strong> ${ingredient.date}<br>
+       <img src="${ingredient.photo}" alt="写真"><br>
+       <button class="delete-button" data-name="${ingredient.name}">削除</button>`;
+
+    document.getElementById('output').appendChild(outputItem);
+
+    outputItem.querySelector('.delete-button').addEventListener('click', function() {
+      deleteIngredient(ingredient.name);
+      const checklistItem = document.querySelector(`.check-item[data-name="${ingredient.name}"]`);
+      if (checklistItem) {
+        checklistItem.checked = false;
+        localStorage.setItem(ingredient.name, JSON.stringify(false));
+        checkMissionButton();
+      }
+    });
+  }
+
+  function deleteIngredient(name) {
+    let ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+    ingredients = ingredients.filter(ingredient => ingredient.name !== name);
+    localStorage.setItem('ingredients', JSON.stringify(ingredients));
+    document.getElementById('output').innerHTML = '';
+    displayStoredIngredients();
+    checkMissionButton();
+  }
+
+  function loadChecklistState() {
+    const checklistItems = document.querySelectorAll('.check-item');
+    checklistItems.forEach(item => {
+      const itemName = item.dataset.name;
+      item.checked = JSON.parse(localStorage.getItem(itemName)) || false;
+      item.addEventListener('change', function() {
+        localStorage.setItem(itemName, JSON.stringify(item.checked));
+        checkMissionButton();
+      });
+    });
+  }
+
+  function checkMissionButton() {
+    const allChecked = Array.from(document.querySelectorAll('.check-item')).every(item => item.checked);
+    const missionButton = document.getElementById('mission-button');
+    missionButton.style.display = allChecked ? 'block' : 'none';
+  }
+
+  function goToSecondMission() {
+    const allChecked = Array.from(document.querySelectorAll('.check-item')).every(item => item.checked);
+    if (allChecked) {
+      updateIngredientQuantities();
+      window.location.href = 'mission2_1.html';
+    } else {
+      alert('すべてのチェックボックスがチェックされていません。まだ未完成です。');
+    }
+  }
+
+  function updateUsedIngredients() {
+    const usedIngredients = JSON.parse(localStorage.getItem('usedIngredients')) || [];
+    if (usedIngredients.length > 0) {
+      let ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+      usedIngredients.forEach(used => {
+        const ingredient = ingredients.find(ing => ing.name === used.name);
+        if (ingredient) {
+          ingredient.quantity -= used.quantity;
+          if (ingredient.quantity <= 0) {
+            ingredients = ingredients.filter(ing => ing.name !== used.name);
+          }
+        }
+      });
+      localStorage.setItem('ingredients', JSON.stringify(ingredients));
+      localStorage.removeItem('usedIngredients');
+      document.getElementById('output').innerHTML = '';
+      displayStoredIngredients();
+    }
+  }
+
+  function autoCheckIngredients() {
+    const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+    const checklistItems = document.querySelectorAll('.check-item');
+
+    ingredients.forEach(ingredient => {
+      const matchingItem = Array.from(checklistItems).find(item => item.dataset.name === ingredient.name);
+      if (matchingItem) {
+        const requiredQuantity = parseInt(matchingItem.dataset.quantity, 10);
+        if (ingredient.quantity >= requiredQuantity) {
+          matchingItem.checked = true;
+        } else {
+          matchingItem.checked = false;
+        }
+        localStorage.setItem(ingredient.name, JSON.stringify(matchingItem.checked));
+      }
+    });
+
+    checklistItems.forEach(item => {
+      item.addEventListener('change', function() {
+        checkMissionButton();
+      });
+    });
+
+    checkMissionButton();
+  }
+
+  function updateIngredientQuantities() {
+    const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+    const checklistItems = document.querySelectorAll('.check-item');
+
+    checklistItems.forEach(item => {
+      if (item.checked) {
+        const ingredientName = item.dataset.name;
+        const requiredQuantity = parseInt(item.dataset.quantity, 10);
+        const ingredient = ingredients.find(ing => ing.name === ingredientName);
+
+        if (ingredient) {
+          ingredient.quantity -= requiredQuantity;
+          if (ingredient.quantity <= 0) {
+            const index = ingredients.indexOf(ingredient);
+            ingredients.splice(index, 1);
+            item.checked = false;
+            localStorage.setItem(ingredientName, JSON.stringify(false));
+          }
+        }
+      }
+    });
+
+    localStorage.setItem('ingredients', JSON.stringify(ingredients));
+    checkMissionButton();
+  }
+
+  function updateChecklist(ingredientName) {
+    const ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+    const checklistItem = document.querySelector(`.check-item[data-name="${ingredientName}"]`);
+
+    if (checklistItem) {
+      const totalQuantity = ingredients
+        .filter(ing => ing.name === ingredientName)
+        .reduce((sum, ing) => sum + ing.quantity, 0);
+
+      const requiredQuantity = parseInt(checklistItem.dataset.quantity, 10);
+      checklistItem.checked = totalQuantity >= requiredQuantity;
+
+      localStorage.setItem(ingredientName, JSON.stringify(checklistItem.checked));
+    }
+  }
+</script>
+</body>
+</html>

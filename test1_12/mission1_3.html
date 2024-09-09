@@ -14,7 +14,20 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome-animation/0.0.10/font-awesome-animation.css" type="text/css" media="all" />
 </head>
 <body>
-<h1>買い物狂いのトメイトウ（トマト）<div class = "star-level"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div></h1>
+      <!-- ハンバーガーメニュー -->
+      <div class="hamburger" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    
+      <!-- メニューの内容 -->
+      <div id="menu" class="menu">
+        <a href="hero.html" target="_blank">ロスヒーローレベル</a>
+        <a href="recipe_record.html" target="_blank">倒したフードロスエネミー</a>
+    
+      </div>
+<h1>買い物狂いのトメイトウ<div class = "star-level"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div></h1>
 <img src = "img/賞味期限切れ.png" class="keyframe animation" alt = "poteto">
 <p class="explanation">買い物狂いで食品を無駄にする買い物狂いのトメイトゥを発見！<br>食べきれるわけないのに、買いまくっている！これは食い止めなければ、<br>この貯蔵のトメイトゥを倒すためには、秘伝のアイテムを集めて、”フレイムムソードエッグ（オムライス） ”を作らねばならない！<br>フレイムソードエッグを作り上げ、買い物狂いを食いトメイトゥ！</p>
 <div id="checklist">
@@ -81,7 +94,7 @@
       
     </select>
 
-    <label for="quantity">個数（個数/グラム/合/本）:</label>
+    <label for="quantity">個数（個/g/合/本/玉/束/片）:</label>
     <input type="number" id="quantity" name="quantity" step = "0.5" required>
 
     <label for="photo">写真:</label>
@@ -94,7 +107,11 @@
   <button id="mission-button" style="display:none;" onclick="goToSecondMission()">次へ進む</button>
 </div>
 <script>
-  // JavaScriptコードをここに追加します
+  function toggleMenu() {
+    const menu = document.getElementById('menu');
+    menu.classList.toggle('active');
+  }
+
   const unitMap = {
     'ごはん': '合',
     'うどん': '玉',
@@ -112,7 +129,7 @@
     'きゃべつ': '個',
     'アスパラ': '本',
     'ごぼう': '本',
-    '紅ショウガ': 'グラム',
+    '紅ショウガ': 'g',
     'パプリカ': '個',
     'ピーマン': '個',
     'もやし': 'g',
@@ -124,6 +141,17 @@
     'バター': 'g',
     'チーズ': '個',
   };
+
+  document.getElementById('name').addEventListener('change', function() {
+    const selectedFood = this.value;
+    const quantityInput = document.getElementById('quantity');
+    
+    if (unitMap[selectedFood]) {
+      quantityInput.placeholder = `数量 (${unitMap[selectedFood]})`;
+    } else {
+      quantityInput.placeholder = '数量';
+    }
+  });
 
   document.addEventListener('DOMContentLoaded', function() {
     updateUsedIngredients();
@@ -140,27 +168,78 @@
     const name = nameSelect.options[nameSelect.selectedIndex].value;
     const quantity = parseFloat(document.getElementById('quantity').value).toFixed(1);
     const photo = document.getElementById('photo').files[0];
-    const unit = unitMap[name] || '';
+    const unit = unitMap[name];
     const now = new Date();
     const formattedDate = now.toLocaleString();
 
-    const reader = new FileReader();
-    reader.onload = function(e) {
+    if (photo) {
+      compressImage(photo).then(compressedPhoto => {
+        const ingredient = {
+          name: name,
+          quantity: parseFloat(quantity),
+          unit: unit,
+          date: formattedDate,
+          photo: compressedPhoto
+        };
+
+        saveIngredient(ingredient);
+        document.getElementById('ingredient-form').reset();
+        checkMissionButton();
+      });
+    } else {
       const ingredient = {
         name: name,
         quantity: parseFloat(quantity),
         unit: unit,
         date: formattedDate,
-        photo: e.target.result
+        photo: ''
       };
 
       saveIngredient(ingredient);
       document.getElementById('ingredient-form').reset();
       checkMissionButton();
-    };
-
-    reader.readAsDataURL(photo);
+    }
   });
+
+  function compressImage(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          const maxSize = 1000; // 最大サイズ
+
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > maxSize) {
+              height *= maxSize / width;
+              width = maxSize;
+            }
+          } else {
+            if (height > maxSize) {
+              width *= maxSize / height;
+              height = maxSize;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob(function(blob) {
+            const compressedPhoto = URL.createObjectURL(blob);
+            resolve(compressedPhoto);
+          }, 'image/jpeg', 0.7); // 画像フォーマットと品質
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
 
   function saveIngredient(ingredient) {
     let ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
@@ -197,7 +276,7 @@
       `<strong>食材の名前:</strong> ${ingredient.name}<br>
        <strong>個数:</strong> ${ingredient.quantity.toFixed(1)} ${ingredient.unit}<br>
        <strong>登録した日時:</strong> ${ingredient.date}<br>
-       <img src="${ingredient.photo}" alt="写真"><br>
+       ${ingredient.photo ? `<img src="${ingredient.photo}" alt="写真"><br>` : ''}
        <button class="delete-button" data-name="${ingredient.name}">削除</button>`;
 
     document.getElementById('output').appendChild(outputItem);

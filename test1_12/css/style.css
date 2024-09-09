@@ -29,13 +29,6 @@ body {
     height: auto;
     margin-top: 20px;
   }
-  button {
-    padding: 0 30px;
-    margin: 50px 100px;
-  }
-  #output {
-    margin-top: 20px;
-  }
   h1{
     font-size: 48px;
     padding: 40px 0;
@@ -51,7 +44,50 @@ body {
   p{
     padding: 40px 0;
   }
-  
+    /* ハンバーガーメニューのスタイル */
+    .hamburger {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      z-index: 1000;
+    }
+
+    .hamburger div {
+      background-color: #333;
+      height: 4px;
+      margin: 6px 0;
+      width: 100%;
+    }
+
+  .menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 999;
+    padding: 50px 20px;
+  }
+
+  .menu a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin: 20px 0;
+  }
+
+  .menu a:hover {
+    text-decoration: underline;
+  }
+
+  .menu.active {
+    display: block;
+  }
   .animation{
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
@@ -177,7 +213,8 @@ input {
 }
 
 button {
-    padding: 10px;
+    padding: 0 30px;
+    margin: 50px 100px;
     background: #007bff;
     color: #fff;
     border: none;
@@ -236,5 +273,18 @@ button:hover {
     }
     .item2{
       margin-left: 0;
+    }
+    .container label{
+      padding-top: 20px;
+    }
+    input {
+      margin-bottom: 0;
+    }
+    button {
+      padding: 2px;
+      margin: 10px 0;
+    }
+    .delete-button{
+      width: 80px;
     }
   }

@@ -72,11 +72,7 @@
         points += 20;
         localStorage.setItem('points', points);
 
-        // ヒーロー情報を更新
-        const heroWindow = window.open('hero.html', '_blank');
-        heroWindow.onload = function() {
-          heroWindow.location.reload();
-        };
+     
         // // 画像データをローカルストレージに保存
         // const preview = document.getElementById('preview').src;
         // const enemyName = "腐食のロスエッグリーパー"; // 敵の名前
